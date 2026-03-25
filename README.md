@@ -1,42 +1,46 @@
 # Helpdesk Application
 
-A lightweight Helpdesk ticketing system built with **Flask (Python)**, **MariaDB**, **HTML**, and **Vanilla CSS**.
+A fully functional Helpdesk ticketing system built with **Flask (Python)**, **MariaDB**, **HTML**, and **Vanilla CSS**.
 
-## Features
+## ✨ Features
+- **User Authentication**: Secure Sign Up and Log In system with password hashing (`werkzeug.security`).
 - **Ticket Management**: Create, view, and update support tickets.
-- **Status Tracking**: Keep track of tickets with statuses like *Open*, *In Progress*, and *Closed*.
-- **User Dashboard**: See all active and past tickets at a glance.
-- **Responsive UI**: A clean, modern interface styled with vanilla CSS.
+- **Status Tracking**: Keep track of tickets with dynamic status badges (*Open*, *In Progress*, and *Closed*) and priorities.
+- **User Dashboard**: See all active and past tickets at a glance with live statistics.
+- **Premium UI**: A clean, modern, fully responsive dark-themed interface built from scratch without bulky CSS frameworks.
 
-## Prerequisites
+## 🛠 Prerequisites
 Before running the application, make sure you have the following installed:
 - [Python 3.x](https://www.python.org/)
 - [MariaDB](https://mariadb.org/)
-- pip (Python package manager)
 
-## Project Structure
+## 📁 Project Structure
 ```text
 Helpdesk/
 │
 ├── app.py                 # Main Flask application and routes
 ├── database.py            # Database connection setup
+├── schema.sql             # SQL code to define database tables
+├── run_schema.py          # Script to initialize tables in MariaDB
 ├── requirements.txt       # Python dependencies
 ├── .env                   # Environment variables (DB credentials)
 ├── README.md              # Project documentation
 │
 ├── static/                # Static assets
 │   ├── css/
-│   │   └── style.css      # Vanilla CSS styles
+│   │   └── style.css      # Vanilla CSS styles (Premium Dark Theme)
 │   └── images/            # Image assets
 │
 └── templates/             # HTML templates
-    ├── base.html          # Base layout template
+    ├── base.html          # Base layout template and Navbar
     ├── index.html         # Dashboard / Ticket list
     ├── create_ticket.html # Form to submit a new ticket
-    └── view_ticket.html   # Detailed view of a single ticket
+    ├── view_ticket.html   # Detailed view of a single ticket
+    ├── login.html         # User login page
+    └── register.html      # User registration page
 ```
 
-## Setup Instructions
+## 🚀 Setup Instructions
 
 ### 1. Database Configuration
 1. Log in to your MariaDB console:
@@ -45,60 +49,53 @@ Helpdesk/
    ```
 2. Create the database for the helpdesk:
    ```sql
-   CREATE DATABASE helpdesk_db;
-   ```
-3. *(Optional)* Create a specific user for the application:
-   ```sql
-   CREATE USER 'helpdesk_user'@'localhost' IDENTIFIED BY 'your_password';
-   GRANT ALL PRIVILEGES ON helpdesk_db.* TO 'helpdesk_user'@'localhost';
-   FLUSH PRIVILEGES;
+   CREATE DATABASE helpdesk;
+   EXIT;
    ```
 
 ### 2. Environment Setup
-1. Clone this repository (or navigate to the project directory).
-2. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   ```
-3. Activate the virtual environment:
-   - **Windows**: `venv\Scripts\activate`
-   - **macOS/Linux**: `source venv/bin/activate`
-4. Install the required Python packages:
+1. Open a terminal in the project directory.
+2. Create and activate a virtual environment:
+   - **Windows**: 
+     ```bash
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+   - **macOS/Linux**:
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+3. Install the required Python packages:
    ```bash
    pip install -r requirements.txt
    ```
 
 ### 3. Application Configuration
-Create a `.env` file in the root of the project with your database credentials:
+Ensure your `.env` file in the root of the project has your actual database credentials:
 ```env
 DB_HOST=localhost
 DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=helpdesk_db
+DB_PASSWORD=your_actual_password
+DB_NAME=helpdesk
 FLASK_SECRET_KEY=super_secret_key
 ```
 
 ### 4. Initialize the Database
-Run the setup script (if provided) or manually run the SQL schema to create the necessary tables for `users` and `tickets`:
+Run the setup script to instantly create the required `users` and `tickets` tables in MariaDB:
 ```bash
 python run_schema.py
 ```
-*(Alternatively, you can add commands here based on how you initialize your database).*
+*(You should see "Database tables created successfully!")*
 
 ### 5. Run the Application
 Start the Flask development server:
-```bash
-flask run
-```
-or
 ```bash
 python app.py
 ```
 The application will be accessible at `http://127.0.0.1:5000` in your web browser.
 
-## Next Steps
-- Implement user authentication (Login/Register).
-- Add functionality for administrators to assign tickets to specific staff members.
+## 🎯 Next Steps
+- Link user accounts directly to the specific tickets they create.
+- Setup an Admin Role to securely assign tickets to specific staff members.
 - Setup email notifications for ticket updates.
-
----
