@@ -20,6 +20,12 @@
         <ul class="nav-links" id="nav-links">
             <li><a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a></li>
             <li><a href="/ticket/new" class="nav-link {% if request.path == '/ticket/new' %}active{% endif %}">New Ticket</a></li>
+            {% if session.get('user_id') %}
+                <li><a href="/logout" class="nav-link" style="color: #f87171;">Logout ({{ session.get('username') }})</a></li>
+            {% else %}
+                <li><a href="/login" class="nav-link {% if request.path == '/login' %}active{% endif %}">Login</a></li>
+                <li><a href="/register" class="btn btn-primary btn-sm" style="margin-left: 0.25rem;">Sign Up</a></li>
+            {% endif %}
         </ul>
         <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
     </nav>

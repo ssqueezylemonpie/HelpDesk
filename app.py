@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+from werkzeug.security import generate_password_hash, check_password_hash
 from database import get_db_connection
 import os
 from dotenv import load_dotenv
@@ -27,6 +28,71 @@ def index():
     return render_template('index.html', tickets=tickets, stats=stats)
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Check if user already exists
+        cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
+        if cursor.fetchone():
+            flash('Username or email already exists.', 'error')
+            cursor.close()
+            conn.close()
+            return redirect(url_for('register'))
+
+        password_hash = generate_password_hash(password)
+        cursor.execute(
+            "INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)",
+            (username, email, password_hash)
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        flash('Account created successfully! Please log in.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if user and check_password_hash(user['password_hash'], password):
+            # Save user info in the session
+            session['user_id'] = user['id']
+            session['username'] = user['username']
+            flash('Logged in successfully!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid username or password.', 'error')
+
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('index'))
+
+
 @app.route('/ticket/new', methods=['GET', 'POST'])
 def new_ticket():
     if request.method == 'POST':
@@ -36,7 +102,7 @@ def new_ticket():
         category = request.form.get('category')
         name = request.form.get('name')
         email = request.form.get('email')
-
+        
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(

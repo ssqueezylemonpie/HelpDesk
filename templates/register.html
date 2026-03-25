@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-header" style="text-align: center;">
+    <h1>Create an Account</h1>
+    <p>Sign up to organize your support requests easily.</p>
+</section>
+
+<div class="form-card" style="max-width: 450px; margin: 0 auto 4rem;">
+    <form action="/register" method="POST">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="e.g. stian123" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; justify-content: center;">Create Account</button>
+        
+        <p style="text-align: center; margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
+            Already have an account? <a href="/login" style="color: var(--accent); text-decoration: none; font-weight: 600;">Log In</a>
+        </p>
+    </form>
+</div>
+{% endblock %}
