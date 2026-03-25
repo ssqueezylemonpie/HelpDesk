@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-header">
+    <a href="/" class="back-link">&larr; Back to Dashboard</a>
+    <h1>Ticket #{{ ticket.id }}: {{ ticket.title }}</h1>
+</section>
+
+<div class="ticket-detail-grid">
+    <div class="ticket-body card">
+        <h2>Description</h2>
+        <p>{{ ticket.description }}</p>
+    </div>
+
+    <aside class="ticket-meta card">
+        <h2>Details</h2>
+        <ul class="meta-list">
+            <li><span>Status</span> <span class="badge badge-{{ ticket.status }}">{{ ticket.status | title }}</span></li>
+            <li><span>Priority</span> <span class="badge badge-{{ ticket.priority }}">{{ ticket.priority | title }}</span></li>
+            <li><span>Category</span> <span>{{ ticket.category | title }}</span></li>
+            <li><span>Submitted by</span> <span>{{ ticket.name }}</span></li>
+            <li><span>Email</span> <span>{{ ticket.email }}</span></li>
+            <li><span>Created</span> <span>{{ ticket.created_at }}</span></li>
+        </ul>
+
+        <form action="/ticket/{{ ticket.id }}/update" method="POST" class="status-update-form">
+            <label for="new-status">Update Status</label>
+            <select name="status" id="new-status">
+                <option value="open" {% if ticket.status == 'open' %}selected{% endif %}>Open</option>
+                <option value="in_progress" {% if ticket.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                <option value="closed" {% if ticket.status == 'closed' %}selected{% endif %}>Closed</option>
+            </select>
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top: 0.75rem;">Save Changes</button>
+        </form>
+    </aside>
+</div>
+{% endblock %}

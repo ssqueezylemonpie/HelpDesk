@@ -1,6 +1,85 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Tickets Dashboard</h2>
-<p>Welcome to the Helpdesk. Here you will see a list of tickets.</p>
+
+<!-- Hero Banner -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>IT Kuben Helpdesk</h1>
+        <p>Submit support requests, track your tickets, and get help fast from the IT team.</p>
+        <a href="/ticket/new" class="btn btn-primary btn-lg" id="hero-cta">&#43; Submit a Ticket</a>
+    </div>
+</section>
+
+<!-- Stats Row -->
+<section class="stats-row">
+    <div class="stat-card" id="stat-total">
+        <div class="stat-icon">&#128203;</div>
+        <div class="stat-number">{{ stats.total }}</div>
+        <div class="stat-label">Total Tickets</div>
+    </div>
+    <div class="stat-card" id="stat-open">
+        <div class="stat-icon">&#128308;</div>
+        <div class="stat-number">{{ stats.open }}</div>
+        <div class="stat-label">Open</div>
+    </div>
+    <div class="stat-card" id="stat-in-progress">
+        <div class="stat-icon">&#128993;</div>
+        <div class="stat-number">{{ stats.in_progress }}</div>
+        <div class="stat-label">In Progress</div>
+    </div>
+    <div class="stat-card" id="stat-closed">
+        <div class="stat-icon">&#128994;</div>
+        <div class="stat-number">{{ stats.closed }}</div>
+        <div class="stat-label">Closed</div>
+    </div>
+</section>
+
+<!-- Ticket Table -->
+<section class="tickets-section">
+    <div class="section-header">
+        <h2>Recent Tickets</h2>
+        <a href="/ticket/new" class="btn btn-primary" id="new-ticket-btn">&#43; New Ticket</a>
+    </div>
+
+    {% if tickets %}
+    <div class="table-wrapper">
+        <table class="ticket-table" id="ticket-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Submitted By</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                <tr class="ticket-row">
+                    <td class="ticket-id">{{ ticket.id }}</td>
+                    <td class="ticket-title">{{ ticket.title }}</td>
+                    <td>{{ ticket.category }}</td>
+                    <td><span class="badge badge-{{ ticket.priority }}">{{ ticket.priority | title }}</span></td>
+                    <td><span class="badge badge-{{ ticket.status }}">{{ ticket.status | replace('_', ' ') | title }}</span></td>
+                    <td>{{ ticket.name }}</td>
+                    <td>{{ ticket.created_at }}</td>
+                    <td><a href="/ticket/{{ ticket.id }}" class="btn btn-sm">View</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state" id="empty-state">
+        <div class="empty-icon">&#128203;</div>
+        <p>No tickets yet. Be the first to submit one!</p>
+        <a href="/ticket/new" class="btn btn-primary">Submit a Ticket</a>
+    </div>
+    {% endif %}
+</section>
+
 {% endblock %}

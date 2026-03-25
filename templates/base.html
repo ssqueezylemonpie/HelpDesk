@@ -3,19 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helpdesk</title>
+    <meta name="description" content="IT Kuben Helpdesk – Submit and track your IT support tickets fast and easily.">
+    <title>IT Kuben Helpdesk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <header>
-        <h1>Helpdesk System</h1>
-        <nav>
-            <a href="/">Dashboard</a>
-            <a href="#">New Ticket</a>
-        </nav>
-    </header>
-    <main>
+
+    <nav class="navbar" id="main-navbar">
+        <div class="nav-brand">
+            <span class="nav-logo">&#128187;</span>
+            <span class="nav-title">IT Kuben <span class="nav-accent">Helpdesk</span></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a></li>
+            <li><a href="/ticket/new" class="nav-link {% if request.path == '/ticket/new' %}active{% endif %}">New Ticket</a></li>
+        </ul>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+    </nav>
+
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         {% block content %}{% endblock %}
     </main>
+
+    <footer class="site-footer">
+        <p>IT Kuben &copy; 2025 &mdash; VG2 IT Helpdesk System</p>
+    </footer>
+
+    <script>
+        // Mobile nav toggle
+        const toggle = document.getElementById('nav-toggle');
+        const navLinks = document.getElementById('nav-links');
+        toggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // Navbar scroll shadow
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('main-navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 </html>
