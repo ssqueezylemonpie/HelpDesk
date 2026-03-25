@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS tickets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
+    category VARCHAR(100),
+    status ENUM('open', 'in_progress', 'closed') DEFAULT 'open',
+    name VARCHAR(150),
+    email VARCHAR(150),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
