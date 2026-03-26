@@ -60,14 +60,14 @@
             <tbody>
                 {% for ticket in tickets %}
                 <tr class="ticket-row">
-                    <td class="ticket-id">{{ ticket.id }}</td>
-                    <td class="ticket-title">{{ ticket.title }}</td>
-                    <td>{{ ticket.category }}</td>
-                    <td><span class="badge badge-{{ ticket.priority }}">{{ ticket.priority | title }}</span></td>
-                    <td><span class="badge badge-{{ ticket.status }}">{{ ticket.status | replace('_', ' ') | title }}</span></td>
-                    <td>{{ ticket.name }}</td>
-                    <td>{{ ticket.created_at }}</td>
-                    <td><a href="/ticket/{{ ticket.id }}" class="btn btn-sm">View</a></td>
+                    <td class="ticket-id" data-label="#">{{ ticket.id }}</td>
+                    <td class="ticket-title" data-label="Title">{{ ticket.title }}</td>
+                    <td data-label="Category">{{ ticket.category }}</td>
+                    <td data-label="Priority"><span class="badge badge-{{ ticket.priority }}">{{ ticket.priority | title }}</span></td>
+                    <td data-label="Status"><span class="badge badge-{{ ticket.status }}">{{ ticket.status | replace('_', ' ') | title }}</span></td>
+                    <td data-label="Submitted By">{{ ticket.name }}</td>
+                    <td data-label="Created">{{ ticket.created_at }}</td>
+                    <td data-label=""><a href="/ticket/{{ ticket.id }}" class="btn btn-sm">View</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
