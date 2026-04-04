@@ -27,6 +27,7 @@
                 <li><a href="/register" class="btn btn-primary btn-sm" style="margin-left: 0.25rem;">Sign Up</a></li>
             {% endif %}
         </ul>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">🌙</button>
         <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
     </nav>
 
@@ -49,14 +50,38 @@
     </footer>
 
     <script>
-        // Mobile nav toggle
+        // ── Theme Toggle ──────────────────────────────
+        const html = document.documentElement;
+        const themeBtn = document.getElementById('theme-toggle');
+
+        // Apply saved theme on load
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            html.setAttribute('data-theme', 'light');
+            themeBtn.textContent = '☀️';
+        }
+
+        themeBtn.addEventListener('click', () => {
+            const isLight = html.getAttribute('data-theme') === 'light';
+            if (isLight) {
+                html.removeAttribute('data-theme');
+                themeBtn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeBtn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // ── Mobile nav toggle ─────────────────────────
         const toggle = document.getElementById('nav-toggle');
         const navLinks = document.getElementById('nav-links');
         toggle.addEventListener('click', () => {
             navLinks.classList.toggle('open');
         });
 
-        // Navbar scroll shadow
+        // ── Navbar scroll shadow ──────────────────────
         window.addEventListener('scroll', () => {
             const navbar = document.getElementById('main-navbar');
             if (window.scrollY > 20) {

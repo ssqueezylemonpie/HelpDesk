@@ -26,6 +26,23 @@
     --transition: 0.2s ease;
 }
 
+/* Light mode overrides */
+[data-theme="light"] {
+    --bg: #f0f4ff;
+    --surface: #ffffff;
+    --surface-alt: #e8edf8;
+    --border: #c8d0e7;
+    --text: #1a1d27;
+    --text-muted: #5a6480;
+    --accent: #4f52d8;
+    --accent-hover: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.18);
+    --success: #16a34a;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -35,6 +52,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ============================
@@ -52,7 +70,11 @@ body {
     background: rgba(15, 17, 23, 0.85);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
-    transition: box-shadow var(--transition);
+    transition: box-shadow var(--transition), background 0.3s ease;
+}
+
+[data-theme="light"] .navbar {
+    background: rgba(240, 244, 255, 0.88);
 }
 
 .navbar.scrolled {
@@ -96,6 +118,12 @@ body {
     color: var(--text);
 }
 
+[data-theme="light"] .nav-link:hover,
+[data-theme="light"] .nav-link.active {
+    background: rgba(79, 82, 216, 0.12);
+    color: var(--accent);
+}
+
 .nav-toggle {
     display: none;
     background: none;
@@ -103,6 +131,32 @@ body {
     color: var(--text);
     font-size: 1.5rem;
     cursor: pointer;
+}
+
+/* ============================
+   Theme Toggle Button
+   ============================ */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background var(--transition), border-color var(--transition),
+                transform var(--transition), box-shadow var(--transition);
+    flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+    background: var(--border);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 /* ============================
@@ -118,11 +172,19 @@ body {
     overflow: hidden;
 }
 
+[data-theme="light"] .hero {
+    background: url('/static/images/hero_light.png') center/cover no-repeat;
+}
+
 .hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(135deg, rgba(15,17,23,0.9) 40%, rgba(99,102,241,0.3) 100%);
+}
+
+[data-theme="light"] .hero::before {
+    background: linear-gradient(135deg, rgba(232,240,255,0.82) 40%, rgba(99,102,241,0.15) 100%);
 }
 
 .hero-content {
